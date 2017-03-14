@@ -1,5 +1,17 @@
-.CklContainer td {
-   border: 1px solid black;
+.CklstSectionHeader {
+  background-color: red;
+}
+
+.CklstStepHeader {
+  background-color: green;
+}
+
+.CklstContainer, .CklstSectionContainer, .CklstStepContainer  {
+  /*border-collapse: collapse; */
+  border-style: solid;
+  border-width: 1px;
+  width: 100%;
+  padding: 5px;
 }
 
 .App {

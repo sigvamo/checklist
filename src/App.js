@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import './w3.css/w3.css'
 
 import Checklist from './Components/Checklist.jsx'
 
