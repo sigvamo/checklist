@@ -7178,8 +7178,8 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .preloader-wrapper.small {
-  width: 36px;
-  height: 36px;
+  width: 16px;
+  height: 16px;
 }
 
 .preloader-wrapper.big {

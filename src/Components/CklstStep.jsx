@@ -4,25 +4,51 @@ import loading from './loading.jsx'
 
 
 class CklstStep extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {collapsActive: this.props.collapsActive,
+    	          headerIcon: this.props.collapsActive ? 'arrow_drop_up' : 'arrow_drop_down',
+                  collapsClass: this.props.collapsActive ? 'collapsible-header active' : 'collapsible-header' };
+  }
+
+  handleClick() {
+  	if (this.state.collapsActive) {
+  	   this.setState({collapsActive: ! this.state.collapsActive,
+    	              headerIcon: 'arrow_drop_down',
+                      collapsClass: 'collapsible-header' })	
+  	} else {
+  		this.setState({collapsActive: ! this.state.collapsActive,
+    	              headerIcon: 'arrow_drop_up',
+                      collapsClass: 'collapsible-header active' })	
+  	}
+  	
+  }
+
   render() {
     
     if (this.props.step) {
       var step = this.props.step
+
     return (
 
-      <div className="card">
-         
-        <div className="w3-container grey lighten-2 w3-large blue-grey-text lighten-2-text">{step.titel || '[No titel]'}</div> {/* step header */}
-        
-        <div className="w3-container">
-          {step.content}
-        </div>
-        
-      </div>
+      <li>
+          <div className={this.state.collapsClass} onClick={this.handleClick.bind(this)}>
+              <i className="material-icons">{this.state.headerIcon}</i>
+              {step.titel || '[No titel]'}
+          </div>
+          <div className="collapsible-body">
+              {step.content}
+          </div>
+      </li>
 
     )} else { return loading }
 
   }
+}
+
+
+const getSteps = (checklist) => {
+
 }
 
 export default CklstStep

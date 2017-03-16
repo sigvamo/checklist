@@ -4,6 +4,7 @@ import loading from './loading.jsx'
 import CklstSection from './CklstSection.jsx'
 
 class Checklist extends Component {
+  
   render() {
     
 
@@ -27,8 +28,8 @@ class Checklist extends Component {
        <div className="w3-container">
           {sections}
        </div>
-
-      </div>
+      
+    </div>
 
     )} else { return loading }
 
@@ -39,6 +40,7 @@ class Checklist extends Component {
 const mapStateToProps$Checklist = function (state) {
    return { checklist: state.checklist }
 }
+
 
 
 export default connect(mapStateToProps$Checklist)(Checklist)

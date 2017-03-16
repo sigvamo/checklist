@@ -31,13 +31,17 @@ var loadChecklist = function (checklistID) {
 	request
            .get({uri: 'http://localhost:2000/int-api/getData', json: true},
            	   function (error, response, data) {
-           	   	  if (error) { console.log('Cannot get checklist: ', error); return;}
+           	   	  if (error) { 
+           	   	  	   console.log('Cannot get checklist: ', error); 
+           	   	  	   return false;
+           	   	  	}
            	   	  console.log('response=', response)
            	   	  if (response.statusCode === 200 && typeof data === "object") {
                        Store.dispatch(Actions.actionSetCurrentChecklist(data))
+                       return true
                   } else {
                        console.log('Cannot get checklist: ', response.body)
-                       return
+                       return false
                   }
            	   })
     
