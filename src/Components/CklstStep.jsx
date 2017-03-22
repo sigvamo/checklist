@@ -33,8 +33,9 @@ class CklstStep extends Component {
 
       <li>
           <div className={this.state.collapsClass} onClick={this.handleClick.bind(this)}>
-              <i className="material-icons">{this.state.headerIcon}</i>
-              {step.titel || '[No titel]'}
+              <i className="material-icons collapsible-header-click">{this.state.headerIcon}</i>
+              <span>{step.titel || '[No titel]'}</span>
+              
           </div>
           <div className="collapsible-body">
               {step.content}
@@ -47,8 +48,5 @@ class CklstStep extends Component {
 }
 
 
-const getSteps = (checklist) => {
-
-}
 
 export default CklstStep
