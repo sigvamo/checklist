@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
+import './agstyles.css';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import * as Actions from './redux-actions.js'
@@ -13,7 +14,7 @@ import Checklist from './Components/Checklist.jsx'
 const Reducer = function (state={}, action) {
   let newState = {}
   switch(action.type) {
-  	
+
     case Actions.SET_CURRENT_CHECKLIST:
          newState = update(state, {checklist: {$set: action.checklist }} )
          return newState    

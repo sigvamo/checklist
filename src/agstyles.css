@@ -1,0 +1,20 @@
+
+.ag-collapsible {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.ag-collapsible-header {
+	border-bottom-style: solid;
+	border-bottom-color: rgba(0, 0, 0, 0.2);
+	border-bottom-width: 1px; 
+}
+
+.ag-collapsible-header-click {
+   cursor: pointer;
+}
+
+.ag-collapsible-body {
+  margin-top: 10px;
+}

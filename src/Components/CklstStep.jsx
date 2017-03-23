@@ -8,18 +8,19 @@ class CklstStep extends Component {
     super(props);
     this.state = {collapsActive: this.props.collapsActive,
     	          headerIcon: this.props.collapsActive ? 'arrow_drop_up' : 'arrow_drop_down',
-                  collapsClass: this.props.collapsActive ? 'collapsible-header active' : 'collapsible-header' };
+                  bodyStyle: this.props.collapsActive ? {display: 'block'} 
+                                                      : {display: 'none'} };
   }
 
   handleClick() {
   	if (this.state.collapsActive) {
   	   this.setState({collapsActive: ! this.state.collapsActive,
     	              headerIcon: 'arrow_drop_down',
-                      collapsClass: 'collapsible-header' })	
+                      bodyStyle: {display: 'none'} })
   	} else {
   		this.setState({collapsActive: ! this.state.collapsActive,
     	              headerIcon: 'arrow_drop_up',
-                      collapsClass: 'collapsible-header active' })	
+                      bodyStyle: {display: 'block'} })
   	}
   	
   }
@@ -32,12 +33,14 @@ class CklstStep extends Component {
     return (
 
       <li>
-          <div className={this.state.collapsClass} onClick={this.handleClick.bind(this)}>
-              <i className="material-icons collapsible-header-click">{this.state.headerIcon}</i>
+          <div className="ag-collapsible-header" >
+             <div className="ag-collapsible-header-click" onClick={this.handleClick.bind(this)}>
+              <i className="material-icons" >{this.state.headerIcon}</i>
               <span>{step.titel || '[No titel]'}</span>
+             </div>
               
           </div>
-          <div className="collapsible-body">
+          <div className="ag-collapsible-body" style={this.state.bodyStyle} >
               {step.content}
           </div>
       </li>
