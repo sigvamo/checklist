@@ -25,6 +25,19 @@ class CklstStep extends Component {
   	
   }
 
+  componentDidMount() {
+    // eslint-disable-next-line
+    CKEDITOR.replace( 'editor_cklst_' + this.props.section + '_' + this.props.step.pos, {
+		codeSnippet_theme: 'ir_black',
+		readOnly: true,
+		removePlugins: 'autosave,notification',
+		autoGrow_onStartup: true,
+		autoGrow_minHeight: 0
+	} );
+
+
+  }
+
   render() {
     
     if (this.props.step) {
@@ -34,14 +47,14 @@ class CklstStep extends Component {
 
       <li>
           <div className="ag-collapsible-header" >
-             <div className="ag-collapsible-header-click" onClick={this.handleClick.bind(this)}>
-              <i className="material-icons" >{this.state.headerIcon}</i>
-              <span>{step.titel || '[No titel]'}</span>
-             </div>
+             
+              <i className="material-icons ag-collapsible-header-click" onClick={this.handleClick.bind(this)}>{this.state.headerIcon}</i>
+              <span className="ag-badge blue lighten-2">{step.pos}</span>
+              <span>{step.titel}</span>
               
           </div>
           <div className="ag-collapsible-body" style={this.state.bodyStyle} >
-              {step.content}
+              <textarea id={'editor_cklst_' + this.props.section + '_' + step.pos} value={step.content}/>
           </div>
       </li>
 
