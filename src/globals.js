@@ -5,6 +5,7 @@ export var ERRO = 'ERRO'
 
 export var apiReqRetry = 30
 
+/* Used to get wait timeouts for getting data from API */
 export var apiReqTimeout = function (r=0) {
       if (r < 3) {
       	 return 3000

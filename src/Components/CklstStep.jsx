@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import * as helpers from '../helpers.js'
 import loading from './loading.jsx'
+
 
 
 class CklstStep extends Component {
@@ -25,38 +27,38 @@ class CklstStep extends Component {
   	
   }
 
-  componentDidMount() {
-    // eslint-disable-next-line
-    CKEDITOR.replace( 'editor_cklst_' + this.props.section + '_' + this.props.step.pos, {
-		codeSnippet_theme: 'ir_black',
-		readOnly: true,
-		removePlugins: 'autosave,notification',
-		autoGrow_onStartup: true,
-		autoGrow_minHeight: 0
-	} );
+  componentDidMount () {
+  	helpers.applyHLJS(this.ckeditorView)
+  }
 
+  componentDidUpdate () {
+    helpers.applyHLJS(this.ckeditorView, true)
+  }
 
+  /* We will set the content of the step as innerHTML of the div element with class ckeditorview */
+  createContentMarkup() {
+    return {__html: this.props.step.content};
   }
 
   render() {
     
     if (this.props.step) {
-      var step = this.props.step
+      var step = Object.assign({}, this.props.step)
 
     return (
 
-      <li>
+      <div className="ag-step-body" id={'STP:' + this.props.section + ':' + step.pos}>
           <div className="ag-collapsible-header" >
              
               <i className="material-icons ag-collapsible-header-click" onClick={this.handleClick.bind(this)}>{this.state.headerIcon}</i>
-              <span className="ag-badge blue lighten-2">{step.pos}</span>
+              <span className="ag-header-badge ag-step-color">{'Step' + ' ' + step.pos}</span>
               <span>{step.titel}</span>
               
           </div>
           <div className="ag-collapsible-body" style={this.state.bodyStyle} >
-              <textarea id={'editor_cklst_' + this.props.section + '_' + step.pos} value={step.content}/>
+              <div className="ckeditorview" ref={ (e) => { this.ckeditorView=e; } } dangerouslySetInnerHTML={this.createContentMarkup()}/>
           </div>
-      </li>
+      </div>
 
     )} else { return loading }
 

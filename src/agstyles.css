@@ -1,4 +1,10 @@
 
+.ag-panel {
+	padding: 0.01em;
+    margin-top: 16px!important;
+    margin-bottom: 16px!important;
+}
+
 .ag-collapsible {
     list-style-type: none;
     margin: 0;
@@ -6,9 +12,7 @@
 }
 
 .ag-collapsible-header {
-	border-bottom-style: solid;
-	border-bottom-color: rgba(0, 0, 0, 0.2);
-	border-bottom-width: 1px; 
+	
 }
 
 .ag-collapsible-header-click {
@@ -16,7 +20,10 @@
 }
 
 .ag-collapsible-body {
-  margin-top: 10px;
+  padding: 1rem;
+  border-style: solid solid solid none;
+  border-color: rgba(0, 0, 0, 0.2);
+  border-width: 1px; 
 }
 
 span.ag-badge {
@@ -37,3 +44,61 @@ span.ag-badge {
   border-radius: 2px;
 }
 
+span.ag-header-badge {
+  min-width: 1.5rem;
+  padding-left: 0.1rem;
+  padding-right: 0.2rem;
+  margin-right: 5px;
+  text-align: center;
+  font-size: 1rem;
+  line-height: 22px;
+  height: 22px;
+  float: left;
+  box-sizing: border-box;
+  font-weight: 300;
+  font-size: 0.8rem;
+  color: #fff;
+  border-top-right-radius:0.41rem;
+  border-bottom-right-radius:0.41rem;
+}
+
+.ag-cklst-body {
+   border-left-style:solid;
+   border-left-width:3px;
+   border-left-color:rgba(93, 102, 93, 0.7);
+   background-color:transparent;
+   /*rgba(19, 183, 16, 0.5);*/
+}
+
+
+.ag-step-color {
+	background-color: rgba(93, 102, 93, 0.5);
+}
+
+.ag-sec-color {
+	background-color: rgba(199, 17, 17, 0.6);;
+}
+
+.ag-sec-body {
+   border-left-style:solid;
+   border-left-width:3px;
+   border-left-color:rgba(199, 17, 17, 0.6);
+   background-color:transparent;
+   /*rgba(19, 183, 16, 0.4);*/
+}
+
+.ag-step-body {
+   border-left-style:solid;
+   border-left-width:2px;
+   border-left-color:rgba(93, 102, 93, 0.5);
+   background-color: white;
+   margin-left:1rem;
+   margin-top: 0.5rem;
+   margin-bottom: 0.5rem;
+}
+
+/* Used in function helpers.navigateToElement */
+@keyframes ag-bg-transition-nav {
+  0% {background-color: orange;}
+  100% {background-color: transparent;}
+}

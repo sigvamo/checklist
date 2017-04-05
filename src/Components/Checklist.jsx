@@ -6,17 +6,94 @@ import * as helpers from '../helpers.js'
 import loading from './loading.jsx'
 import CklstSection from './CklstSection.jsx'
 
+
+/*
+  Checklist component.
+  All sections and steps will be assigned "id" attribute in form: 
+     For section SEC:X where X is the number of the section
+     For step    STP:X:Y where X is the section number and Y is the step number in it
+*/
+
+class Navigation extends Component {
+
+handleClick(id) {
+  helpers.navigateToElement(id)
+}
+
+render () {
+
+   if (! this.props.checklist) { return loading }
+
+   var checklist = Object.assign({}, this.props.checklist)
+   
+   /* Sort sections */
+   checklist.sections.sort((a, b) => {
+         return a.pos - b.pos
+      })
+   
+   /* Sort steps in sections */
+   checklist.sections.forEach( (section) => {
+       section.steps.sort((a, b) => {
+         return a.pos - b.pos
+      }) })
+
+   var treeContent = ( <ul>
+     {checklist.sections.map( (section) => {
+        return ( <li><a onClick={this.handleClick.bind(this, 'SEC:'+section.pos)}>
+                 {'Section' + ' ' + section.pos + ' ' + section.titel || ''}</a><ul>
+                 {section.steps.map((step) => {
+                     return (<li><a onClick={this.handleClick.bind(this, 'STP:'+section.pos+':'+step.pos)}>
+                        {'Step' + ' ' + step.pos + ' ' + (step.titel || '') }</a></li>)
+                 }) } </ul></li> ) 
+         }) 
+      }
+    </ul> )
+
+   return (
+       <div className="card-content">
+          {treeContent}
+       </div>
+    )
+}
+
+}
+
 class Checklist extends Component {
+  constructor(props) {
+    super(props);
+    /* This array ckeditorViews will contain */
+    this.ckeditorViews = []
+  }
+
+  componentDidMount () {
+    this.ckeditorViews.forEach((ckeditorView) => {
+       helpers.applyHLJS(ckeditorView)   
+    })
+    
+  }
+
+  componentDidUpdate () {
+    this.ckeditorViews.forEach((ckeditorView) => {
+       helpers.applyHLJS(ckeditorView, true)   
+    })
+  }
+
   
   render() {
-    
+    var this_ = this
+    this.ckeditorViews = []
 
     if (this.props.checklist) {
-      var checklist = this.props.checklist
+      var checklist = Object.assign({}, this.props.checklist)
       // Placeholder variable for mixing checklist.body and checklist.steps
       var st = []
       // Checklist body content div element class
-      var chklstBodyClass = "w3-panel"
+      var chklstBodyClass = "ag-panel"
+
+      /* We will set the content of the body as innerHTML of the div element with class ckeditorview */
+      var createContentMarkup = function(content) {
+                 return {__html: content};
+      }
       
       /* Parse the sections of the checklist. It is then assigned to Array which index is the "pos" attribute of the
       // section object, it is needed to sort sections by pos. Same principle used for steps in CklstStep component class.
@@ -25,6 +102,12 @@ class Checklist extends Component {
           return prev
       }, []) */
 
+      /* This function will generate div container for body content. It will have class ckeditorview to display content created with CKEDITOR.
+         ref property function will push each div element into ckeditorViews array. */
+      var generateBodyContent = function(bodyContent) {
+         return <div className="ckeditorview" ref={ (e) => { this_.ckeditorViews.push(e); } } dangerouslySetInnerHTML={createContentMarkup(bodyContent)}/>
+      }
+
       // Checking if checklist object has "body" property at all. If it has it, then we must
       // mix body with sections.
       if (checklist.hasOwnProperty('body')) {
@@ -32,7 +115,7 @@ class Checklist extends Component {
             // That is why we assign it to index 0 i.e. st[0]
             checklist.body.find((b) => { 
                if (b.beforesec == 0) {
-                  st[0] = <div className={chklstBodyClass} key="0">{b.content}</div>
+                  st[0] = <div className={chklstBodyClass} key="0">{generateBodyContent(b.content)}</div>
                } 
             })        
       } 
@@ -51,7 +134,7 @@ class Checklist extends Component {
           if (checklist.hasOwnProperty('body')) {
                checklist.body.find((b) => { 
                    if (b.beforesec == section.pos) {
-                      prev[section.pos+shift] = <div className={chklstBodyClass} key={section.pos+shift}>{b.content}</div>
+                      prev[section.pos+shift] = <div className={chklstBodyClass} key={section.pos+shift}>{generateBodyContent(b.content)}</div>
                       shift++
                    }
                })
@@ -67,7 +150,7 @@ class Checklist extends Component {
             // That is why we push it to setContent array
             checklist.body.find((b) => { 
                if (b.beforesec == -1) {
-                  chklstContent.push(<div className={chklstBodyClass} key="-1">{b.content}</div>)
+                  chklstContent.push(<div className={chklstBodyClass} key="-1">{generateBodyContent(b.content)}</div>)
                } 
             })        
       } 
@@ -80,8 +163,9 @@ class Checklist extends Component {
               <span className="card-title">{checklist.titel}</span>
               <p>{checklist.description}</p>
             </div>
-            <div className="card-action">
-                    {chklstContent}
+            <Navigation checklist={checklist}/>
+            <div className="ag-cklst-body">
+               <div className="card-action">{chklstContent}</div>
             </div>
           </div>
 

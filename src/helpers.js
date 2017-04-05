@@ -1,7 +1,9 @@
 import request from 'request'
 import Store from './reduxStore.js'
+import hljs from 'highlightjs'
 import * as globals from './globals.js'
 import * as Actions from './redux-actions.js'
+
 
 export var alertMessage = function (message, type=globals.INFO, visible=true) {
   Store.dispatch(Actions.actionSetAlert({type: type, visible: visible, message: message}))
@@ -48,4 +50,27 @@ export var getAPI = function (action, rCounter=0, retryCount=globals.apiReqRetry
     
 }
 
+/* This function used to apply code highlighting using highlightBlock function of the highlight.js.
+   It receives DOM element and scans all children it will find <pre><code> pair and apply highlighting
+   on <code> element. If second parameter is true then initHighlighting.called = false will be executed. */
+export var applyHLJS = function(element, update) {
+  let el;
+    for (var i = 0; i < element.children.length; i++) {
+        el = element.children[i]
+      if ( el.tagName == 'PRE' ) {
+           if ( el.children[0].tagName == 'CODE' ) {
+            update ? hljs.initHighlighting.called = false : null
+            hljs.highlightBlock(el.children[0])
+          } 
+      }
+    }
+}
 
+/* This function will get id of the element and will scroll it to the screen center and make blink effect.
+   Was create to navigate on Sections and Steps */
+export var navigateToElement = function(id) {
+  let el = document.getElementById(id)
+  el.style.animation = null
+  el.scrollToCenter()
+  el.style.animation = "ag-bg-transition-nav 1s"
+}

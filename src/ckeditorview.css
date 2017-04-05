@@ -1,0 +1,172 @@
+/*
+Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.md or http://ckeditor.com/license
+*/
+
+/* AG This css used to show content created in CKEDITOR. Container object must have class .ckeditorview */
+
+.ckeditorview blockquote
+{
+	font-style: italic;
+	font-family: Georgia, Times, "Times New Roman", serif;
+	padding: 2px 0;
+	border-style: solid;
+	border-color: #ccc;
+	border-width: 0;
+}
+
+.ckeditorview a
+{
+	color: #0782C1;
+}
+
+.ckeditorview ol,ul,dl
+{
+	/* IE7: reset rtl list margin. (#7334) */
+	*margin-right: 0px;
+	/* preserved spaces for list items with text direction other than the list. (#6249,#8049)*/
+	padding: 0 40px;
+}
+
+.ckeditorview h1,h2,h3,h4,h5,h6
+{
+	font-weight: normal;
+	line-height: 1.2;
+}
+
+.ckeditorview hr
+{
+	border: 0px;
+	border-top: 1px solid #ccc;
+}
+
+.ckeditorview img.right
+{
+	border: 1px solid #ccc;
+	float: right;
+	margin-left: 15px;
+	padding: 5px;
+}
+
+.ckeditorview img.left
+{
+	border: 1px solid #ccc;
+	float: left;
+	margin-right: 15px;
+	padding: 5px;
+}
+
+.ckeditorview pre
+{
+	white-space: pre-wrap; /* CSS 2.1 */
+	word-wrap: break-word; /* IE7 */
+	-moz-tab-size: 4;
+	tab-size: 4;
+}
+
+.ckeditorview .marker
+{
+	background-color: Yellow;
+}
+
+.ckeditorview span[lang]
+{
+	font-style: italic;
+}
+
+.ckeditorview figure
+{
+	text-align: center;
+	border: solid 1px #ccc;
+	border-radius: 2px;
+	background: rgba(0,0,0,0.05);
+	padding: 10px;
+	margin: 10px 20px;
+	display: inline-block;
+}
+
+.ckeditorview figure > figcaption
+{
+	text-align: center;
+	display: block; /* For IE8 */
+}
+
+.ckeditorview a > img {
+	padding: 1px;
+	margin: 1px;
+	border: none;
+	outline: 1px solid #0782C1;
+}
+
+/* Widget Styles */
+.ckeditorview .code-featured
+{
+	border: 5px solid red;
+}
+
+.ckeditorview .math-featured
+{
+	padding: 20px;
+	box-shadow: 0 0 2px rgba(200, 0, 0, 1);
+	background-color: rgba(255, 0, 0, 0.05);
+	margin: 10px;
+}
+
+.ckeditorview .image-clean
+{
+	border: 0;
+	background: none;
+	padding: 0;
+}
+
+.ckeditorview .image-clean > figcaption
+{
+	font-size: .9em;
+	text-align: right;
+}
+
+.ckeditorview .image-grayscale
+{
+	background-color: white;
+	color: #666;
+}
+
+.ckeditorview .image-grayscale img, img.image-grayscale
+{
+	filter: grayscale(100%);
+}
+
+.ckeditorview .embed-240p
+{
+	max-width: 426px;
+	max-height: 240px;
+	margin:0 auto;
+}
+
+.ckeditorview .embed-360p
+{
+	max-width: 640px;
+	max-height: 360px;
+	margin:0 auto;
+}
+
+.ckeditorview .embed-480p
+{
+	max-width: 854px;
+	max-height: 480px;
+	margin:0 auto;
+}
+
+.ckeditorview .embed-720p
+{
+	max-width: 1280px;
+	max-height: 720px;
+	margin:0 auto;
+}
+
+.ckeditorview .embed-1080p
+{
+	max-width: 1920px;
+	max-height: 1080px;
+	margin:0 auto;
+}
