@@ -21,6 +21,22 @@ HTMLElement.prototype.scrollToCenter = function(){
     window.scrollBy(0, this.getBoundingClientRect().top - ((window.innerHeight/2) >> 1));
 }
 
+/* Will set scroll event to the window, to keep Navigator  */
+// eslint-disable-next-line
+$().ready(function() {
+      helpers.jQsetOnScroll()
+});
+
+// eslint-disable-next-line
+$(window).resize(function() {
+	  // eslint-disable-next-line
+      if ($(window).width() < 600) {
+      	  helpers.jQsetOnScroll({init: true})
+      } else {
+          helpers.jQsetOnScroll()
+      }
+});
+
 helpers.getAPI({func: function(data) {Store.dispatch(Actions.actionSetCurrentChecklist(data))}, uri: 'http://localhost:2000/int-api/getData'})
 
 

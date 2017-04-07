@@ -6,6 +6,7 @@ import './w3.css/w3.css'
 import Checklist from './Components/Checklist.jsx'
 import Footer from './Components/Footer.jsx'
 import MessageBar from './Components/MessageBar.jsx'
+import Navigation from './Components/Navigation.jsx'
 
 class App extends Component {
   render() {
@@ -20,7 +21,10 @@ class App extends Component {
         <MessageBar alert={{visible: false}}/>
 
         <div className="row">
-          <div className="col s10 offset-s2">
+          <div className="col s12 l3 m2">
+            <Navigation />
+          </div>
+          <div className="col s12 l9 m10">
             <Checklist />
           </div>
         </div>

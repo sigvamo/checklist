@@ -5,6 +5,7 @@ import * as helpers from '../helpers.js'
 
 import loading from './loading.jsx'
 import CklstSection from './CklstSection.jsx'
+import Navigation from './Navigation.jsx'
 
 
 /*
@@ -14,49 +15,6 @@ import CklstSection from './CklstSection.jsx'
      For step    STP:X:Y where X is the section number and Y is the step number in it
 */
 
-class Navigation extends Component {
-
-handleClick(id) {
-  helpers.navigateToElement(id)
-}
-
-render () {
-
-   if (! this.props.checklist) { return loading }
-
-   var checklist = Object.assign({}, this.props.checklist)
-   
-   /* Sort sections */
-   checklist.sections.sort((a, b) => {
-         return a.pos - b.pos
-      })
-   
-   /* Sort steps in sections */
-   checklist.sections.forEach( (section) => {
-       section.steps.sort((a, b) => {
-         return a.pos - b.pos
-      }) })
-
-   var treeContent = ( <ul>
-     {checklist.sections.map( (section) => {
-        return ( <li><a onClick={this.handleClick.bind(this, 'SEC:'+section.pos)}>
-                 {'Section' + ' ' + section.pos + ' ' + section.titel || ''}</a><ul>
-                 {section.steps.map((step) => {
-                     return (<li><a onClick={this.handleClick.bind(this, 'STP:'+section.pos+':'+step.pos)}>
-                        {'Step' + ' ' + step.pos + ' ' + (step.titel || '') }</a></li>)
-                 }) } </ul></li> ) 
-         }) 
-      }
-    </ul> )
-
-   return (
-       <div className="card-content">
-          {treeContent}
-       </div>
-    )
-}
-
-}
 
 class Checklist extends Component {
   constructor(props) {
@@ -158,12 +116,12 @@ class Checklist extends Component {
     
     return (
        
-       <div className="card darken-1">
+       <div className="card darken-1" id="Checklist">
             <div className="card-content">
               <span className="card-title">{checklist.titel}</span>
               <p>{checklist.description}</p>
             </div>
-            <Navigation checklist={checklist}/>
+    
             <div className="ag-cklst-body">
                <div className="card-action">{chklstContent}</div>
             </div>

@@ -74,3 +74,50 @@ export var navigateToElement = function(id) {
   el.scrollToCenter()
   el.style.animation = "ag-bg-transition-nav 1s"
 }
+
+export var sleep = function(time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+/* jQuery function, to keep Navigation always on top */
+export var jQsetOnScroll = function(params={}) {
+  if (params.init === true) {
+       // eslint-disable-next-line
+       $("#Navigation").css({"maxHeight": 300});
+       //$("#Navigation").height(300);
+       // eslint-disable-next-line
+       var checklistMarginTop = $("#Checklist").css("margin-top")
+       // eslint-disable-next-line
+       let offset = parseFloat(checklistMarginTop.replace(/[^0-9.]+/g,''));
+       // eslint-disable-next-line
+       $("#Navigation").css({"margin-top": offset})
+       // eslint-disable-next-line
+       $(window).off('scroll')
+  } else {
+     // eslint-disable-next-line
+     $("#Navigation").css({"maxHeight": $(window).height() - 30});
+     // eslint-disable-next-line
+     $(window).scroll(function(){
+     // eslint-disable-next-line
+     $("#Navigation").css({"maxHeight": $(window).height() - 30});
+     //$("#Navigation").height($(window).height() - 30);
+     // eslint-disable-next-line
+     var checklistTop = $("#Checklist").offset().top
+     // eslint-disable-next-line
+     var checklistHeight = $("#Checklist").height()
+     // eslint-disable-next-line
+     var checklistMarginTop = $("#Checklist").css("margin-top")
+     // eslint-disable-next-line
+     let offset = parseFloat(checklistMarginTop.replace(/[^0-9.]+/g,''));
+     // eslint-disable-next-line
+     var windowTop = $(window).scrollTop();
+     (windowTop < checklistTop) ? offset += 0 : offset += windowTop-checklistTop
+     // eslint-disable-next-line
+     if (offset > checklistTop + checklistHeight - $("#Navigation").height() ) { return }
+     // eslint-disable-next-line
+       $("#Navigation")
+              .stop()
+              // eslint-disable-next-line
+              .animate({"marginTop": (offset + "px")}, 0 );
+     })
+  }
+}

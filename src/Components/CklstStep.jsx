@@ -50,7 +50,7 @@ class CklstStep extends Component {
       <div className="ag-step-body" id={'STP:' + this.props.section + ':' + step.pos}>
           <div className="ag-collapsible-header" >
              
-              <i className="material-icons ag-collapsible-header-click" onClick={this.handleClick.bind(this)}>{this.state.headerIcon}</i>
+              <i className="material-icons ag-cur-pointer" onClick={this.handleClick.bind(this)}>{this.state.headerIcon}</i>
               <span className="ag-header-badge ag-step-color">{'Step' + ' ' + step.pos}</span>
               <span>{step.titel}</span>
               
