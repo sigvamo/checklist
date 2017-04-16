@@ -23,6 +23,11 @@ const Reducer = function (state={}, action) {
          return newState    
       break;
 
+      case Actions.SET_NAV_HIGHLIGHT:
+         newState = update(state, {navigationHighlights: {$set: action.what }} )
+         return newState    
+      break;
+
     default:
         return state
   }

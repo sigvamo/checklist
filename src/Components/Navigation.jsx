@@ -49,11 +49,14 @@ render () {
         return ( <li key={section.pos}><a onClick={this.handleClick.bind(this, 'SEC:'+section.pos)} className="ag-cur-pointer">
                  <div style={{display: "table-cell"}}><span className="ag-badge ag-sec-color">{'Section' + ' ' + section.pos}</span></div>
                           <div style={{display: "table-cell"}}>{section.titel}</div></a><ul>
+
                  {section.steps.map((step) => {
-                     return (<li key={step.pos}><a onClick={this.handleClick.bind(this, 'STP:'+section.pos+':'+step.pos)} className="ag-cur-pointer">
+                     return (<li key={step.id}><a onClick={this.handleClick.bind(this, 'STP:' + step.id)} className="ag-cur-pointer">
                         <div style={{display: "table-cell"}}><span className="ag-badge ag-step-color">{'Step' + ' ' + step.pos}</span></div>
                                <div style={{display: "table-cell"}}>{step.titel}</div></a></li>)
-                 }) } </ul></li> ) 
+                 }) } 
+
+                 </ul></li> ) 
          }) 
       }
     </ul> )
@@ -68,7 +71,7 @@ render () {
 }
 
 const mapStateToProps$Navigation = function (state) {
-   if (! state.checklist) { return null }
+   if (! state.checklist) { return {} }
 
    var checklistSkeleton = state.checklist.sections.map((section) => {
            return {
@@ -77,7 +80,11 @@ const mapStateToProps$Navigation = function (state) {
               steps : section.steps}
       })
 
-   return { checklistSkeleton: {sections: checklistSkeleton} }
+   if (state.navigationHighlights) {
+       return { checklistSkeleton: {sections: checklistSkeleton}, highlights: state.navigationHighlights }
+   } else {
+       return { checklistSkeleton: {sections: checklistSkeleton} }
+   }
 }
 
 export default connect(mapStateToProps$Navigation)(Navigation)

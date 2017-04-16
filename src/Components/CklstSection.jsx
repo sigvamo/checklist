@@ -43,7 +43,7 @@ class CklstSection extends Component {
 
       /* We will set the content of the body as innerHTML of the div element with class ckeditorview */
       var createContentMarkup = function(content) {
-                 return {__html: content};
+                 return {__html: helpers.showVariables(content)};
       }
 
       /* This function will generate div container for body content. It will have class ckeditorview to display content created with CKEDITOR.
@@ -87,7 +87,7 @@ class CklstSection extends Component {
                })
           } 
           // Add step itself
-          prev[step.pos+shift] = <CklstStep step={step} section={section.pos} collapsActive={true} key={step.pos+shift}/>
+          prev[step.pos+shift] = <CklstStep step={step} collapsActive={true} key={'STP:' + step.id}/>
           return prev
       }, st)
     

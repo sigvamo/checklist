@@ -6,13 +6,14 @@ import * as helpers from '../helpers.js'
 import loading from './loading.jsx'
 import CklstSection from './CklstSection.jsx'
 import Navigation from './Navigation.jsx'
+import Variables from './Variables.jsx'
 
 
 /*
   Checklist component.
   All sections and steps will be assigned "id" attribute in form: 
      For section SEC:X where X is the number of the section
-     For step    STP:X:Y where X is the section number and Y is the step number in it
+     For step    STP:X where X is the step id
 */
 
 
@@ -50,7 +51,7 @@ class Checklist extends Component {
 
       /* We will set the content of the body as innerHTML of the div element with class ckeditorview */
       var createContentMarkup = function(content) {
-                 return {__html: content};
+                 return {__html: helpers.showVariables(content)};
       }
       
       /* Parse the sections of the checklist. It is then assigned to Array which index is the "pos" attribute of the
@@ -121,8 +122,11 @@ class Checklist extends Component {
               <span className="card-title">{checklist.titel}</span>
               <p>{checklist.description}</p>
             </div>
-    
+            <div className="card-action">
+              <Variables />
+            </div>
             <div className="ag-cklst-body">
+               
                <div className="card-action">{chklstContent}</div>
             </div>
           </div>

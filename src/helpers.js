@@ -78,6 +78,61 @@ export var navigateToElement = function(id) {
 export var sleep = function(time) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
+
+
+export var findVariables = function (variable) {
+  var checklist = Store.getState().checklist
+  
+  var res = {}
+
+  if (checklist.body) {
+     res.checklist = checklist.body.reduce((prev, curr) => {
+         if (curr.content.search(variable) != -1) {
+           prev.push(curr.beforesec)
+         } 
+         return prev
+     }, [])
+  }
+
+  res.sections = checklist.sections.reduce((prev, curr) => {
+      if (! curr.body) { return prev }
+      var body = curr.body.reduce((prv, cr) => {
+         if (cr.content.search(variable) != -1) {
+              prv.push(cr.beforestep)
+             }
+         return prv     
+      }, [])
+
+      var steps = curr.steps.reduce((prv, cr) => {
+         if (cr.content.search(variable) != -1) {
+              prv.push(cr.id)
+             }
+         return prv     
+      }, [])
+      
+      if (body.length > 0 ) {
+         prev[curr.pos] ? prev[curr.pos].body = body : prev[curr.pos] = {}
+      }
+
+      if (steps.length > 0 ) {
+         prev[curr.pos] ? prev[curr.pos].steps = steps : prev[curr.pos] = {}
+      }
+
+      return prev
+  }, {})
+
+ return res
+
+}
+
+export var showVariables = function (text) {
+   function replacer(match) {
+     return '<span class="ag-variable" title="Placeholder for variable ' + match + '"><code>' + match.replace(/\$/g, '') + '</code></span>'
+   }
+   return text.replace(/\$\$([A-Za-z0-9_]+)\$\$/g, replacer)
+} 
+
+
 /* jQuery function, to keep Navigation always on top */
 export var jQsetOnScroll = function(params={}) {
   if (params.init === true) {

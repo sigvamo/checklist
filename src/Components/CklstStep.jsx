@@ -37,7 +37,7 @@ class CklstStep extends Component {
 
   /* We will set the content of the step as innerHTML of the div element with class ckeditorview */
   createContentMarkup() {
-    return {__html: this.props.step.content};
+    return {__html: helpers.showVariables(this.props.step.content)};
   }
 
   render() {
@@ -47,7 +47,7 @@ class CklstStep extends Component {
 
     return (
 
-      <div className="ag-step-body" id={'STP:' + this.props.section + ':' + step.pos}>
+      <div className="ag-step-body" id={'STP:' + step.id}>
           <div className="ag-collapsible-header" >
              
               <i className="material-icons ag-cur-pointer" onClick={this.handleClick.bind(this)}>{this.state.headerIcon}</i>

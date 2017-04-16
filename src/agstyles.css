@@ -148,3 +148,13 @@ span.ag-header-badge {
     }
 
 }
+
+.ag-variable {
+	border: 1px solid lightgray;
+    /* border-radius: 6px; */
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    box-shadow: 1px 1px 3px lightgrey;
+}
