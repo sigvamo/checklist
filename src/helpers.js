@@ -54,6 +54,7 @@ export var getAPI = function (action, rCounter=0, retryCount=globals.apiReqRetry
    It receives DOM element and scans all children it will find <pre><code> pair and apply highlighting
    on <code> element. If second parameter is true then initHighlighting.called = false will be executed. */
 export var applyHLJS = function(element, update) {
+  if (element == null) { console.log('WARNING', 'applyHLJS', 'element argument cannot be null'); return; }
   let el;
     for (var i = 0; i < element.children.length; i++) {
         el = element.children[i]
@@ -125,6 +126,7 @@ export var findVariables = function (variable) {
 
 }
 
+// Function to highlit variables
 export var showVariables = function (text) {
    function replacer(match) {
      return '<span class="ag-variable" title="Placeholder for variable ' + match + '"><code>' + match.replace(/\$/g, '') + '</code></span>'
@@ -176,3 +178,27 @@ export var jQsetOnScroll = function(params={}) {
      })
   }
 }
+
+
+
+// Manage Checklist section object. Function to get metadata Object for specific id
+export var getContentEntryMeta = function (section, id){
+   let retVal
+   section.contentmeta.find((b) => { 
+             if (b.id == id) {
+                retVal = b
+             }
+         })
+   return retVal || -1
+}
+
+// Manage Checklist section object. Function to get content Object for specific id
+export var getContentEntryData = function (section, id){
+   let retVal
+   section.contentdata.find((b) => { 
+             if (b.id == id) {
+                retVal = b
+             }
+         })
+   return retVal || -1
+ }
