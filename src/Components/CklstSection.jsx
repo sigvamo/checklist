@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import * as globals from '../globals.js'
 import * as helpers from '../helpers.js'
+import * as Actions from '../redux-actions.js'
 
 import loading from './loading.jsx'
 import CklstStep from './CklstStep.jsx'
@@ -13,19 +14,25 @@ class CklstSection extends Component {
     super(props);
     /* This array ckeditorViews will contain */
     this.ckeditorViews = []
+    this.id2stepid = {}
+    this.section = null
   }
+
+
+
 
   componentDidMount () {
     this.ckeditorViews.forEach((ckeditorView) => {
        helpers.applyHLJS(ckeditorView)   
     })
-    
+    this.props.setId2StepIDMapping(this.section, this.id2stepid)
   }
 
   componentDidUpdate () {
     this.ckeditorViews.forEach((ckeditorView) => {
        helpers.applyHLJS(ckeditorView, true)
     })
+    this.props.setId2StepIDMapping(this.section, this.id2stepid)
   }
 
   refBodyContent(e) {
@@ -37,7 +44,6 @@ class CklstSection extends Component {
   render() {
     var this_ = this
     this.ckeditorViews = []
-    var meta = []
     // Section body content div element class
     var secBodyClass = "ag-panel"
 
@@ -45,6 +51,8 @@ class CklstSection extends Component {
     if (this.props.section) {
       var section = Object.assign({}, this.props.section);      
       
+      this.section = section.pos
+
       // this function will check if section.contentmeta has duplicate ids or non-existent ids
       function hasDuplicates() {
         let valuesSoFar = [];
@@ -84,29 +92,19 @@ class CklstSection extends Component {
          return <div className="ckeditorview" ref={this_.refBodyContent.bind(this_)} dangerouslySetInnerHTML={createContentMarkup(bodyContent)}/>
       }
 
-      // Create array with id and pos of the content from contentmeta
-      meta = section.contentmeta.reduce((prev, curr) => {
-         if (curr.pid === 0) { prev.push({id: curr.id, pos: curr.pos}) }
-         return prev
-      }, [])
-
-
-      // Sort meta by pos
-      meta.sort((a, b) => {
-         return a.pos - b.pos
-      })
-
-      var secContent = meta.map((entry)=>{
-            let currContent = helpers.getContentEntryMeta(section, entry.id)
+      var stepID = 0
+      var secContent = section.contentmeta.map((entry, ind)=>{
             let currData = helpers.getContentEntryData(section, entry.id)
-            if (currContent.type === 0) {
-               return <div className={secBodyClass} id={'SBD:' + section.pos + ':' + currContent.id} key={currContent.id}>{generateBodyContent(currData.content)}</div>
+            if (entry.type === 0) {
+               return <div className={secBodyClass} id={'SBD:' + section.pos + ':' + entry.id} key={entry.id}>{generateBodyContent(currData.content)}</div>
             }
-            if (currContent.type === 1) {
-               return <CklstStep stepMeta={currContent} stepData={currData} collapsActive={true} section={section.pos} key={currContent.id}/>
+            if (entry.type === 1) {
+               stepID++ 
+               this.id2stepid[entry.id] = stepID
+               return <CklstStep stepId={stepID} stepData={currData} collapsActive={true} section={section.pos} key={entry.id}/>
             }
-            if (currContent.type === 2) {
-               return <div key={currContent.id}/>
+            if (entry.type === 2) {
+               return <div key={entry.id}/>
             }
       })
 
@@ -160,4 +158,13 @@ class CklstSection extends Component {
   }
 }
 
-export default CklstSection
+const mapDispatchToProps$CklstSection = function(dispatch) {
+  return {
+    setId2StepIDMapping: function(section, mapping) {
+      dispatch(Actions.actionUpdateId2StepID({section: section, mapping: mapping}))
+    }
+  }
+}
+
+export default connect(null, mapDispatchToProps$CklstSection)(CklstSection)
+

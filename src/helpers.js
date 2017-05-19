@@ -86,37 +86,17 @@ export var findVariables = function (variable) {
   
   var res = {}
 
-  if (checklist.body) {
-     res.checklist = checklist.body.reduce((prev, curr) => {
-         if (curr.content.search(variable) != -1) {
-           prev.push(curr.beforesec)
-         } 
-         return prev
-     }, [])
-  }
-
   res.sections = checklist.sections.reduce((prev, curr) => {
-      if (! curr.body) { return prev }
-      var body = curr.body.reduce((prv, cr) => {
+      
+      var contentIncludesVAR = curr.contentdata.reduce((prv, cr) => {
          if (cr.content.search(variable) != -1) {
-              prv.push(cr.beforestep)
-             }
-         return prv     
-      }, [])
-
-      var steps = curr.steps.reduce((prv, cr) => {
-         if (cr.content.search(variable) != -1) {
-              prv.push(cr.id)
+              prv.push(Object.assign(cr, getContentEntryMeta(curr, cr.id)))
              }
          return prv     
       }, [])
       
-      if (body.length > 0 ) {
-         prev[curr.pos] ? prev[curr.pos].body = body : prev[curr.pos] = {}
-      }
-
-      if (steps.length > 0 ) {
-         prev[curr.pos] ? prev[curr.pos].steps = steps : prev[curr.pos] = {}
+      if (contentIncludesVAR.length > 0 ) {
+         prev[curr.pos] = contentIncludesVAR
       }
 
       return prev
@@ -198,6 +178,48 @@ export var getContentEntryData = function (section, id){
    section.contentdata.find((b) => { 
              if (b.id == id) {
                 retVal = b
+             }
+         })
+   return retVal || -1
+ }
+
+// Checklist condition selector. Provide conditions object and id of the condition it will return the condition (string)
+export var getCondition = function (conditions, cid){
+   let retVal
+   conditions.find((b) => { 
+             if (b.id == cid) {
+                retVal = b.condition
+             }
+         })
+   return retVal || -1
+ }
+
+// Function to evaluate condition. Input is string condition, which will be evaluated and returned true or false
+export var evalCondition = function (condition){
+  function evaluate(cond) {
+     let fBody = 'if (' + cond + ') { return true } else { return false }'
+     return new Function(fBody)();
+  }
+   return evaluate(condition)
+ }
+
+// Remove element from array by value.
+export var delElement = function (arr, val, key=null){
+  if ( key != null ) {
+     for(var i = arr.length - 1; i >= 0; i--) {
+        if(arr[i][key] === val) {
+          arr.splice(i, 1);
+        }
+     }
+  }
+}
+
+// Find StepID by entry id in specified mapping object
+export var getStepIDbyEntryID = function (obj, section, id){
+   let retVal
+   obj.find((b) => { 
+             if (b.section == section) {
+                retVal = b.mapping[id]
              }
          })
    return retVal || -1

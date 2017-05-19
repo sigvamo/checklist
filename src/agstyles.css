@@ -75,6 +75,11 @@ span.ag-header-badge {
 	background-color: rgba(93, 102, 93, 0.5);
 }
 
+.ag-cstep-color {
+	background-color: rgba(93, 2, 93, 0.5);
+}
+
+
 .ag-sec-color {
 	background-color: rgba(199, 17, 17, 0.6);;
 }

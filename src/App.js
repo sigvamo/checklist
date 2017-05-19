@@ -7,11 +7,13 @@ import Checklist from './Components/Checklist.jsx'
 import Footer from './Components/Footer.jsx'
 import MessageBar from './Components/MessageBar.jsx'
 import Navigation from './Components/Navigation.jsx'
+import PopupManager from './Components/PopupManager.jsx'
 
 class App extends Component {
   render() {
     return (
       <div>
+      <PopupManager />
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />

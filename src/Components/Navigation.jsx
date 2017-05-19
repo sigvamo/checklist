@@ -23,43 +23,39 @@ componentDidUpdate() {
   } 
 }
 
-handleClick(entry, secpos) {
-  if (entry.type == 1) {
-     helpers.navigateToElement('STP:' + secpos + ':' + entry.id)
-  }
+handleClick(eID) {
+  helpers.navigateToElement(eID)
 }
 
 render () {
    var meta = []
-  
+   var stepClass
+   var stepDescTitel
+
    if (! this.props.checklistSkeleton) { return loading }
 
    var checklistSkeleton = Object.assign({}, this.props.checklistSkeleton)
-   
-   // Create array "meta" with id and pos of the content from contentmeta per section and sort each by pos
-   checklistSkeleton.sections.forEach((section) => {
-      meta.push(
-          section.contentmeta.reduce((prev, curr) => {
-            if (curr.pid === 0) { prev.push({id: curr.id, pos: curr.pos}) }
-            return prev
-          }, [])
-          .sort((a, b) => {
-              return a.pos - b.pos })
-      ) 
-   })
-   
-   console.log('D1', meta)
 
    var treeContent = ( <ul id="cklstNavigationTree">
      {checklistSkeleton.sections.map( (section) => {
+        var stepID = 0
         return ( <li key={section.pos}><a onClick={this.handleClick.bind(this, 'SEC:'+section.pos)} className="ag-cur-pointer">
                  <div style={{display: "table-cell"}}><span className="ag-badge ag-sec-color">{'Section' + ' ' + section.pos}</span></div>
                           <div style={{display: "table-cell"}}>{section.titel}</div></a><ul>
 
                  {section.contentmeta.map((entry) => {
-                     return (<li key={entry.id}><a onClick={this.handleClick.bind(this, entry, section.pos)} className="ag-cur-pointer">
-                        <div style={{display: "table-cell"}}><span className="ag-badge ag-step-color">{'Step' + ' ' + entry.pos}</span></div>
-                               <div style={{display: "table-cell"}}>{entry.titel}</div></a></li>)
+                     if ( entry.type === 1 ) 
+                          { stepID++ } else { return null }
+                     if ( entry.cid ) {
+                        stepClass = "ag-badge ag-cstep-color"
+                        stepDescTitel = "Conditional step." + " " + "Condition:" + " " + helpers.getCondition(section.conditions, entry.cid)
+                     } else
+                     {  stepClass = "ag-badge ag-step-color" 
+                        stepDescTitel = ""
+                        }
+                     return (<li key={entry.id} title={stepDescTitel}><a onClick={this.handleClick.bind(this, 'STP:' + section.pos + ':' + entry.id)} className="ag-cur-pointer">
+                        <div style={{display: "table-cell"}}><span className={stepClass}>{'Step' + ' ' + stepID}</span></div>
+                               <div style={{display: "table-cell"}}>{helpers.getContentEntryData(section, entry.id).titel}</div></a></li>)
                  }) } 
 
                  </ul></li> ) 
@@ -69,7 +65,7 @@ render () {
 
    return (
        <div className="card cklstNavigationContainer" ref={ (e) => { this.NavigationDiv=e; } } id="Navigation">
-          {/*treeContent*/}
+          {treeContent}
        </div>
     )
 }
@@ -85,6 +81,7 @@ const mapStateToProps$Navigation = function (state) {
            return {
               titel: section.titel,
               pos: section.pos,
+              conditions: section.conditions,
               contentmeta: meta,
               contentdata: titels}
       })

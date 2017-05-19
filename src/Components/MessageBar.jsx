@@ -59,7 +59,7 @@ const mapStateToProps$MessageBar = function (state) {
    return { alert: state.alert }
 }
 
-const mapDispatchToProps = function(dispatch) {
+const mapDispatchToProps$MessageBar = function(dispatch) {
   return {
     clearAlert: function() {
       dispatch(Actions.actionSetAlert({visible: false }))
@@ -67,4 +67,4 @@ const mapDispatchToProps = function(dispatch) {
   }
 }
 
-export default connect(mapStateToProps$MessageBar, mapDispatchToProps)(MessageBar)
+export default connect(mapStateToProps$MessageBar, mapDispatchToProps$MessageBar)(MessageBar)

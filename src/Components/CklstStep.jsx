@@ -42,17 +42,17 @@ class CklstStep extends Component {
 
   render() {
     
-    if (this.props.stepMeta && this.props.stepData) {
-      var stepMeta = Object.assign({}, this.props.stepMeta)
+    if (this.props.stepId && this.props.stepData) {
+      var stepId = this.props.stepId
       var stepData = Object.assign({}, this.props.stepData)
 
     return (
 
-      <div className="ag-step-body" id={'STP:' + this.props.section + ':' + stepMeta.id}>
+      <div className="ag-step-body" id={'STP:' + this.props.section + ':' + stepData.id}>
           <div className="ag-collapsible-header" >
              
               <i className="material-icons ag-cur-pointer" onClick={this.handleClick.bind(this)}>{this.state.headerIcon}</i>
-              <span className="ag-header-badge ag-step-color">{'Step' + ' ' + stepMeta.stepid}</span>
+              <span className="ag-header-badge ag-step-color">{'Step' + ' ' + stepId}</span>
               <span>{stepData.titel}</span>
               
           </div>
