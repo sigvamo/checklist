@@ -6,6 +6,9 @@ import * as Actions from '../redux-actions.js'
 
 import loading from './loading.jsx'
 import CklstStep from './CklstStep.jsx'
+import CklstInput from './CklstInput.jsx'
+import CklstGoto from './CklstGoto.jsx'
+import CklstRepeat from './CklstRepeat.jsx'
 
 
 
@@ -59,7 +62,8 @@ class CklstSection extends Component {
         for (var i = 0; i < section.contentmeta.length; ++i) {
             if (!section.contentmeta[i].id) { return true }
             let value = section.contentmeta[i].id;
-            if (value in valuesSoFar) {
+            // Check if value is in valuesSoFar array
+            if (valuesSoFar.indexOf(value) > -1) {
               return true;
             }
             valuesSoFar.push(value);
@@ -96,16 +100,23 @@ class CklstSection extends Component {
       var secContent = section.contentmeta.map((entry, ind)=>{
             let currData = helpers.getContentEntryData(section, entry.id)
             if (entry.type === 0) {
-               return <div className={secBodyClass} id={'SBD:' + section.pos + ':' + entry.id} key={entry.id}>{generateBodyContent(currData.content)}</div>
+               return <div className={secBodyClass} id={'ENTRY:' + section.pos + ':' + entry.id} key={entry.id}>{generateBodyContent(currData.content)}</div>
             }
             if (entry.type === 1) {
                stepID++ 
                this.id2stepid[entry.id] = stepID
-               return <CklstStep stepId={stepID} stepData={currData} collapsActive={true} section={section.pos} key={entry.id}/>
+               return <CklstStep stepId={stepID} cId={entry.cid} stepData={currData} collapsActive={true} section={section} key={entry.id}/>
             }
             if (entry.type === 2) {
-               return <div key={entry.id}/>
+               return <CklstInput entry={entry} section={section} key={entry.id}/>
             }
+            if (entry.type === 3) {
+               return <CklstGoto entry={entry} section={section} key={entry.id}/>
+            }
+            if (entry.type === 4) {
+               return <CklstRepeat entry={entry} section={section} key={entry.id}/>
+            }
+            return <div key={entry.id}/>
       })
 
       // We providing st array to this reduce function, here we will mix body and steps

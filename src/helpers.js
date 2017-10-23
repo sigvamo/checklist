@@ -9,6 +9,10 @@ export var alertMessage = function (message, type=globals.INFO, visible=true) {
   Store.dispatch(Actions.actionSetAlert({type: type, visible: visible, message: message}))
 }
 
+export var closeMessage = function () {
+  Store.dispatch(Actions.actionSetAlert({visible: false}))
+}
+
 // getAPI is function used to get data from API, all data passed in JSON format.
 // Function gets as argument "action" which is objects of next form:
 //   {func: function(data) { actions with data}, uri: 'some uri'}
@@ -69,11 +73,13 @@ export var applyHLJS = function(element, update) {
 
 /* This function will get id of the element and will scroll it to the screen center and make blink effect.
    Was create to navigate on Sections and Steps */
-export var navigateToElement = function(id) {
+export var navigateToElement = function(id, blink=true) {
   let el = document.getElementById(id)
   el.style.animation = null
   el.scrollToCenter()
-  el.style.animation = "ag-bg-transition-nav 1s"
+  if (blink == true) {
+     el.style.animation = "ag-bg-transition-nav 1s"
+  }
 }
 
 export var sleep = function(time) {
@@ -89,7 +95,7 @@ export var findVariables = function (variable) {
   res.sections = checklist.sections.reduce((prev, curr) => {
       
       var contentIncludesVAR = curr.contentdata.reduce((prv, cr) => {
-         if (cr.content.search(variable) != -1) {
+         if (cr.content.search(new RegExp('\\$\\$' + variable + '\\$\\$', 'g')) != -1) {
               prv.push(Object.assign(cr, getContentEntryMeta(curr, cr.id)))
              }
          return prv     
@@ -105,6 +111,22 @@ export var findVariables = function (variable) {
  return res
 
 }
+
+
+export var getVariableById = function (id) {
+  var checklist = Store.getState().checklist
+  
+  let res
+   checklist.variables.find((b) => { 
+             if (b.id == id) {
+                res = b.name
+             }
+         })
+
+   return res || "undef"
+
+}
+
 
 // Function to highlit variables
 export var showVariables = function (text) {

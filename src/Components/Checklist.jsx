@@ -13,7 +13,7 @@ import Variables from './Variables.jsx'
   Checklist component.
   All sections and steps will be assigned "id" attribute in form: 
      For section SEC:X where X is the number of the section
-     For step    STP:X where X is the step id
+     For entries    ENTRY:X where X is the step id
 */
 
 
@@ -123,6 +123,7 @@ class Checklist extends Component {
               <p>{checklist.description}</p>
             </div>
             <div className="card-action">
+              <div className="ag-section-header"><span>Variables</span></div>
               <Variables />
             </div>
             <div className="ag-cklst-body">

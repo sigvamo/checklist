@@ -53,7 +53,7 @@ render () {
                      {  stepClass = "ag-badge ag-step-color" 
                         stepDescTitel = ""
                         }
-                     return (<li key={entry.id} title={stepDescTitel}><a onClick={this.handleClick.bind(this, 'STP:' + section.pos + ':' + entry.id)} className="ag-cur-pointer">
+                     return (<li key={entry.id} title={stepDescTitel}><a onClick={this.handleClick.bind(this, 'ENTRY:' + section.pos + ':' + entry.id)} className="ag-cur-pointer">
                         <div style={{display: "table-cell"}}><span className={stepClass}>{'Step' + ' ' + stepID}</span></div>
                                <div style={{display: "table-cell"}}>{helpers.getContentEntryData(section, entry.id).titel}</div></a></li>)
                  }) } 

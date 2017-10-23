@@ -13,12 +13,12 @@ render() {
  }
 
  let ClassColor
- let barStyle
+ let barStyle = {position: "fixed", marginTop: "0px", zIndex: 1001, width: "100%"}
 
  if (this.props.alert.visible) {
-      barStyle = {display: 'block'}
+      barStyle = Object.assign(barStyle, {display: 'block'})
  } else {
- 	  barStyle = {display: 'none'}
+ 	  barStyle = Object.assign(barStyle, {display: 'none'})
  }
 
  switch(this.props.alert.type) {

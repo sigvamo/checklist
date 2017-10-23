@@ -16,7 +16,6 @@ constructor(props) {
 
 handleMLeav() {
   this.props.removePopup(this.props.popupID)
-  console.log('D4', 'Out')
 }
 
 handleClick(eID) {
@@ -26,38 +25,54 @@ handleClick(eID) {
 render() {
    var this_ = this
   
-   var Style = {maxWidth:"150px"}
-
-   console.log('D1', this.props.props_.varsTree)
-   console.log('D1', this.props.id2stepidMapping)
+   var Style = {width:"400px", maxWidth:"450px", padding:"3px"}
 
    var varsTree = this.props.props_.varsTree
+   var foundCnt = Object.keys(varsTree.sections).length
    var id2stepidMapping = this.props.id2stepidMapping
-
-   console.log('D1', varsTree.sections)
 
    function content() {
     var ret = []
+    var show = ''
     for (var key in varsTree.sections) {
        var secPos = key
        if (varsTree.sections.hasOwnProperty(key)) {
-        var a = ( <div key={key}> {varsTree.sections[key].map((entry) => {
+         var a = varsTree.sections[key].map((entry) => {
                      var stepID = helpers.getStepIDbyEntryID(id2stepidMapping, secPos, entry.id)
-                     return (<li key={secPos + ":" + entry.id}>
-                      <a onClick={this_.handleClick.bind(this_, 'STP:' + secPos + ':' + entry.id)} className="ag-cur-pointer">
-                        <div style={{display: "table-cell"}}>
-                          <span className="ag-badge ag-sec-color">{'Section' + ' ' + secPos}</span>
-                          <span className="ag-badge ag-step-color">{'Step' + ' ' + stepID}</span>
-                          <span>{entry.titel}</span></div></a></li>) }) } 
-                  </div>)
+                     var label = 'ENTRY:'
+                     switch (entry.type) {
+                      case 0: 
+                        show = 'Section body'
+                        break;
+                      case 1:
+                        show = 'Step' + ' ' + stepID
+                        break;
+                      case 2:
+                        show = 'Input'
+                        break;
+                     }
+  
+                     return (<tr key={secPos + ":" + entry.id} onClick={this_.handleClick.bind(this_, label + secPos + ':' + entry.id)} className="ag-cur-pointer">
+                                <td style={{width:"10%",whiteSpace:"nowrap"}}><span>{'Section' + ' ' + secPos}</span></td>
+                                <td style={{width:"10%",whiteSpace:"nowrap",backgroundColor:"#f4f5f7"}}><span>{show}</span></td>
+                                <td style={{width:"80%"}}><span>{entry.titel}</span></td>
+                             </tr>) })
+       }                  
         ret.push(a) 
-         }} 
-    return ret
+         } 
+    return <table className="ag-variables-links"><tbody>{ret}</tbody></table>
    }
     
+   if (foundCnt === 0) {
+     var message = 'not used in any entity.'
+   } else {
+     var message = 'used in next entities:'
+   }
+
    return (
       <div className="card" style={Style} onMouseLeave={this.handleMLeav.bind(this)}>
-          <ul>{content()}</ul>
+          <div><span className="ag-variables-title">Variable <b>$${this.props.props_.content}$$</b> {message}</span></div>
+          {content()}
       </div>
       )
 }
@@ -112,8 +127,8 @@ handleMove(variable, e) {
               visible: true, 
               style: {},
               component: VarsPopup_,
-              componentProps: {content: 'TTTEST '+ variable, varsTree: helpers.findVariables(variable)},
-              position: {x: this.curX + 10, y: this.curY - 10} })
+              componentProps: {content: variable, varsTree: helpers.findVariables(variable)},
+              position: {x: this.curX + 10, y: this.curY - 20} })
     this.triggerPopup = false
   }
 }
@@ -130,14 +145,22 @@ render () {
       })
    
    var VarsContent = variables.map( (variable) => {
-        return ( <div key={variable.id} onMouseOut={this.handleMOut.bind(this)} 
-          onMouseOver={this.handleMOver.bind(this)} onMouseMove={this.handleMove.bind(this, variable.name)}><span>{variable.name}</span></div> ) 
+        return ( <tr key={variable.id}><td><div onMouseOut={this.handleMOut.bind(this)} 
+          onMouseOver={this.handleMOver.bind(this)} onMouseMove={this.handleMove.bind(this, variable.name)}><pre><code>{variable.name}</code></pre></div>
+           </td>
+           <td>
+             <pre><code>{variable.default}</code></pre>
+           </td>
+           </tr>) 
       }
     )
 
    return (
        <div ref={ (e) => { this.VariablesDiv=e; } } id="Variables">
+        <table className="ag-variables-list"><tbody>
+        <tr className="ag-variables-list-title"><td><b>Variable</b></td><td><b>Default value</b></td></tr>
           {VarsContent}
+        </tbody></table>
        </div>
     )
 }

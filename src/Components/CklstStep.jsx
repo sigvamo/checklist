@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import * as helpers from '../helpers.js'
 import loading from './loading.jsx'
-
+import CStepTitel from './CStepTitel.jsx'
 
 
 class CklstStep extends Component {
@@ -45,10 +45,19 @@ class CklstStep extends Component {
     if (this.props.stepId && this.props.stepData) {
       var stepId = this.props.stepId
       var stepData = Object.assign({}, this.props.stepData)
+      var conditionId = this.props.cId
+      var section=this.props.section
+
+    function conditionalStep() {
+    	if (conditionId) {
+    		return <CStepTitel condition={helpers.getCondition(section.conditions, conditionId)} />
+    	} 
+    }
 
     return (
 
-      <div className="ag-step-body" id={'STP:' + this.props.section + ':' + stepData.id}>
+      <div className="ag-step-body" id={'ENTRY:' + section.pos + ':' + stepData.id}>
+         {conditionalStep()}
           <div className="ag-collapsible-header" >
              
               <i className="material-icons ag-cur-pointer" onClick={this.handleClick.bind(this)}>{this.state.headerIcon}</i>
