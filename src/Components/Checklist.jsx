@@ -42,7 +42,7 @@ class Checklist extends Component {
     var this_ = this
     this.ckeditorViews = []
 
-    if (this.props.checklist) {
+    if (this.props.checklist && Object.keys(this.props.checklist).length > 0 ) {
       var checklist = Object.assign({}, this.props.checklist)
       // Placeholder variable for mixing checklist.body and checklist.steps
       var st = []

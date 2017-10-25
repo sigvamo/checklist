@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import * as helpers from '../helpers.js'
 import * as Actions from '../redux-actions.js'
 
 class Footer extends Component {
@@ -14,6 +15,7 @@ class Footer extends Component {
   }
 
   handleClick(e) {
+  	helpers.printREDUXStore()
     if (this.chkTitelInput.checkValidity()) {
     	  this.props.updateCklstTitel(this.state.chkTitelInputValue)
           this.chkTitelInput.value = null

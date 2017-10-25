@@ -12,10 +12,15 @@ render() {
  	return null
  }
 
+  console.log('DEBUG4.2', this.props.popups)
+  console.log('DEBUG4.2', this.props.popups.length)
+  console.log('DEBUG4.2', this.props.popups[0])
+
   var popupMgrStyle = {position: "absolute"}
   var popupStyle  = {position: "absolute", zIndex: 1000}
   
   var popups = this.props.popups.reduce((next, popup) => {
+     console.log('DEBUG4.3', popup)
      var Component = popup.component
      if ("style" in popup) {
         var popupCurrentStyle = Object.assign(popupStyle, popup.style)  
@@ -28,10 +33,14 @@ render() {
               popupCurrentStyle["left"] = popup.position.x
               popupCurrentStyle["top"]  = popup.position.y
            }
+           console.log('DEBUG4', popup.id)
            next.push(<div style={popupCurrentStyle} key={popup}><Component popupID={popup.id} props_={popup.componentProps}/></div>)
      }
      return next
   }, [])
+
+  
+
 
   return (
 
@@ -46,6 +55,7 @@ render() {
 }
 
 const mapStateToProps$PopupManager = function (state) {
+   if ( state.popups ) { console.log('DEBUG4.1', state.popups[0]) }
    return { popups: state.popups }
 }
 

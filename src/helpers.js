@@ -227,6 +227,7 @@ export var evalCondition = function (condition){
 
 // Remove element from array by value.
 export var delElement = function (arr, val, key=null){
+  console.log('DEBUG6.1',arr)
   if ( key != null ) {
      for(var i = arr.length - 1; i >= 0; i--) {
         if(arr[i][key] === val) {
@@ -234,6 +235,7 @@ export var delElement = function (arr, val, key=null){
         }
      }
   }
+  console.log('DEBUG6.2',arr[0])
 }
 
 // Find StepID by entry id in specified mapping object
@@ -246,3 +248,9 @@ export var getStepIDbyEntryID = function (obj, section, id){
          })
    return retVal || -1
  }
+
+
+export var printREDUXStore = function () {
+  Store.dispatch(Actions.actionRemoveCurrentChecklist())
+  console.log(Store.getState())
+}
