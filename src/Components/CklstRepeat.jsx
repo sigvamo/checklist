@@ -39,6 +39,21 @@ class CklstRepeat extends Component {
     
     var fromEntry = helpers.getContentEntryMeta(section, entry.repeat[0])
     var toEntry = helpers.getContentEntryMeta(section, entry.repeat[entry.repeat.length-1])
+
+    if (globals.getEntryName(fromEntry.type) == 'STEP') {
+          var fromTitel = 'Step' + ' ' + helpers.getStepIDbyEntryIDfromStore(section.pos, fromEntry.id)
+    } else {
+          var fromTitel = globals.getEntryName(fromEntry.type)
+    }
+
+    if (globals.getEntryName(toEntry.type) == 'STEP') {
+          var toTitel = 'Step' + ' ' + helpers.getStepIDbyEntryIDfromStore(section.pos, toEntry.id)
+    } else {
+          var toTitel = globals.getEntryName(toEntry.type)
+    }
+
+
+    var linkText = fromTitel + " - " + toTitel
     
     return ( 
                  
@@ -50,8 +65,9 @@ class CklstRepeat extends Component {
                           <div className="ag-repeat-body">
                               <div className="ag-repeat-" style={{borderWidth: 0}}>Repeat entries: 
                                  <span className="ag-link" 
-                                 onClick={this.handleClick.bind(this, 'ENTRY:' + section.pos + ':' + fromEntry.id, 'ENTRY:' + section.pos + ':' + toEntry.id, 'ENTRY:' + section.pos + ':' + entry.id)}>
-                                 {globals.getEntryName(fromEntry.type)} - {globals.getEntryName(toEntry.type)}</span>
+                                     onClick={this.handleClick.bind(this, 'ENTRY:' + section.pos + ':' + fromEntry.id, 'ENTRY:' + section.pos + ':' + toEntry.id, 'ENTRY:' + section.pos + ':' + entry.id)}>
+                                    {linkText}
+                                 </span>
                               </div>
                           </div>
   

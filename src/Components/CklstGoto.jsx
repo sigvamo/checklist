@@ -27,7 +27,14 @@ class CklstGoto extends Component {
     }
     
     var gotoEntry = helpers.getContentEntryMeta(section, entry.goto)
-    
+
+    if (globals.getEntryName(gotoEntry.type) == 'STEP') {
+          var linkText = 'Step' + ' ' + helpers.getStepIDbyEntryIDfromStore(section.pos, gotoEntry.id)
+    } else {
+          var linkText = globals.getEntryName(gotoEntry.type)
+    }
+
+        
     return ( 
                  
             <div className="ag-panel">
@@ -37,7 +44,7 @@ class CklstGoto extends Component {
                           <div className="ag-goto-marker ag-goto-color">GoTo</div>
                           <div className="ag-goto-body">
                               <div className="ag-goto-" style={{borderWidth: 0}}>Goto entry: 
-                                 <span className="ag-link" onClick={this.handleClick.bind(this, 'ENTRY:' + section.pos + ':' + gotoEntry.id)}>{globals.getEntryName(gotoEntry.type)}</span>
+                                 <span className="ag-link" onClick={this.handleClick.bind(this, 'ENTRY:' + section.pos + ':' + gotoEntry.id)}>{linkText}</span>
                               </div>
                           </div>
   

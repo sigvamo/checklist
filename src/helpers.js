@@ -113,6 +113,20 @@ export var findVariables = function (variable) {
 }
 
 
+export var getSectionByPos = function (checklist, sectionPos) {
+  
+  let res
+   checklist.sections.find((section) => { 
+             if (section.pos == sectionPos) {
+                res = section
+             }
+         })
+
+   return res || "undef"
+
+}
+
+
 export var getVariableById = function (id) {
   var checklist = Store.getState().checklist
   
@@ -227,7 +241,7 @@ export var evalCondition = function (condition){
 
 // Remove element from array by value.
 export var delElement = function (arr, val, key=null){
-  console.log('DEBUG6.1',arr)
+  
   if ( key != null ) {
      for(var i = arr.length - 1; i >= 0; i--) {
         if(arr[i][key] === val) {
@@ -235,7 +249,7 @@ export var delElement = function (arr, val, key=null){
         }
      }
   }
-  console.log('DEBUG6.2',arr[0])
+  
 }
 
 // Find StepID by entry id in specified mapping object
@@ -249,6 +263,35 @@ export var getStepIDbyEntryID = function (obj, section, id){
    return retVal || -1
  }
 
+
+// Find StepID by entry id frm current REDUX Store
+export var getStepIDbyEntryIDfromStore = function (section, id){
+   let obj = Store.getState().id2stepidMapping
+   let retVal
+   obj.find((b) => { 
+             if (b.section == section) {
+                retVal = b.mapping[id]
+             }
+         })
+   return retVal || -1
+ }
+
+export var genId2StepIdMapping = function (checklist){
+  if (! checklist) {return null}
+  if (checklist.sections.length == 0) {return null}
+      var id2stepId = checklist.sections.map((section, ind)=>{
+         var stepID = 0
+         let tmpObj={}
+         section.contentmeta.map((entry, ind) => {
+           if (entry.type === 1) {
+               stepID++ 
+               tmpObj[entry.id] = stepID
+             }
+           })
+           return {section: section.pos, mapping: tmpObj}
+         })
+  return id2stepId
+}
 
 export var printREDUXStore = function () {
   Store.dispatch(Actions.actionRemoveCurrentChecklist())

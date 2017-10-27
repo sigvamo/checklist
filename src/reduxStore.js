@@ -1,4 +1,5 @@
-import { createStore } from 'redux';
+
+import { createStore, applyMiddleware } from 'redux';
 import update from 'immutability-helper'
 import * as Actions from './redux-actions.js'
 import * as helpers from './helpers.js'
@@ -9,6 +10,7 @@ const Reducer = function (state={}, action) {
 
     case Actions.SET_CURRENT_CHECKLIST:
          newState = update(state, {checklist: {$set: action.checklist }} )
+         newState = update(newState, {id2stepidMapping: {$set: helpers.genId2StepIdMapping(action.checklist) }} )
          return newState    
       break;
 
@@ -54,13 +56,12 @@ const Reducer = function (state={}, action) {
               }
         }
 
-       console.log('DEBUG5',newState.popups[0], state.popups==newState.popups)
        return newState
     break;
 
 
     case Actions.REMOVE_POPUP:
-       console.log('DEBUG3.1',state.popups[0])
+       
        if (! state.popups) { 
              return state
          } else {
@@ -68,10 +69,9 @@ const Reducer = function (state={}, action) {
          	 // newState = update(state, {popups: {$merge: {} }} ) //Do not work after update of immutability-helper package
              newState = Object.assign({}, state) // Create new object from state
              newState.popups = state.popups.slice()  // Duplicate popups as new object from original state.popups
-             console.log('DEBUG3.2',newState.popups[0])
              helpers.delElement(newState.popups, action.what, "id")
         }
-       console.log('DEBUG3.3',newState.popups[0], state.popups==newState.popups)
+
        return newState
     break;
 
@@ -79,13 +79,16 @@ const Reducer = function (state={}, action) {
 
     case Actions.UPDATE_ID2STEPID:
        // This action will set or update the id2stepidMapping of the state. If id2stepidMapping do not exists then it will be created. If exists then will be updated.
-       
-       if (! state.id2stepidMapping) { 
+
+       /*if (! state.id2stepidMapping) { 
        	     newState = update(state, {id2stepidMapping: {$set: [{section: action.what.section, mapping: action.what.mapping}] }} )
          } else {
          	 helpers.delElement(state.id2stepidMapping, action.what.section, "section")
          	 newState = update(state, {id2stepidMapping: {$push: [{section: action.what.section, mapping: action.what.mapping}] }} )
-        }
+        } */
+
+        newState = update(state, {id2stepidMapping: {$set: helpers.genId2StepIdMapping(action.what.checklist) }} )
+        
        return newState
     break;    
 
@@ -94,6 +97,24 @@ const Reducer = function (state={}, action) {
   }
 }
 
-var Store = createStore(Reducer)
+
+
+/**
+ * Logs all actions and states after they are dispatched.
+ */
+const logger = store => next => action => {
+  console.group(action.type)
+  console.info('dispatching', action)
+  let result = next(action)
+  console.log('next state', store.getState())
+  console.groupEnd(action.type)
+  return result
+}
+
+var createStoreWithMiddleware = applyMiddleware(logger)(createStore)
+
+var Store = createStoreWithMiddleware(Reducer)
+
+//var Store = createStore(Reducer)
 
 export default Store

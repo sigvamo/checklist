@@ -17,7 +17,6 @@ class CklstSection extends Component {
     super(props);
     /* This array ckeditorViews will contain */
     this.ckeditorViews = []
-    this.id2stepid = {}
     this.section = null
   }
 
@@ -28,14 +27,12 @@ class CklstSection extends Component {
     this.ckeditorViews.forEach((ckeditorView) => {
        helpers.applyHLJS(ckeditorView)   
     })
-    this.props.setId2StepIDMapping(this.section, this.id2stepid)
   }
 
   componentDidUpdate () {
     this.ckeditorViews.forEach((ckeditorView) => {
        helpers.applyHLJS(ckeditorView, true)
     })
-    this.props.setId2StepIDMapping(this.section, this.id2stepid)
   }
 
   refBodyContent(e) {
@@ -104,7 +101,6 @@ class CklstSection extends Component {
             }
             if (entry.type === 1) {
                stepID++ 
-               this.id2stepid[entry.id] = stepID
                return <CklstStep stepId={stepID} cId={entry.cid} stepData={currData} collapsActive={true} section={section} key={entry.id}/>
             }
             if (entry.type === 2) {
@@ -154,7 +150,7 @@ class CklstSection extends Component {
       <div className="card ag-sec-body" id={'SEC:' + section.pos}>
                 
         <div className="w3-large blue-grey-text lighten-2-text">
-          <span className="ag-header-badge ag-sec-color">{'Section' + ' ' + section.pos}</span>
+          <span className="ag-header-badge ag-sec-color">{section.pos}</span>
                <span>{section.titel}</span></div> {/* section header */}
         <div className="w3-container">
           <div className="ag-collapsible">
@@ -171,8 +167,8 @@ class CklstSection extends Component {
 
 const mapDispatchToProps$CklstSection = function(dispatch) {
   return {
-    setId2StepIDMapping: function(section, mapping) {
-      dispatch(Actions.actionUpdateId2StepID({section: section, mapping: mapping}))
+    setId2StepIDMapping: function(checklist) {
+      dispatch(Actions.actionUpdateId2StepID({checklist: checklist}))
     }
   }
 }

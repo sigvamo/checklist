@@ -74,11 +74,8 @@ render () {
 
 const mapStateToProps$Navigation = function (state) {
   //Object.keys(state.checklist).length === 0
-   if ( ! state.checklist ) { 
-      console.log('DEBUG1')
-      return {} }
+   if ( ! state.checklist ) { return {} }
 
-   console.log('DEBUG2')
    var checklistSkeleton = state.checklist.sections.map((section) => {
            let meta = section.contentmeta
            let titels = section.contentdata.map((data) => {return {id: data.id, titel: data.titel}; })

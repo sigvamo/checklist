@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import * as globals from '../globals.js'
 import * as helpers from '../helpers.js'
+import * as Actions from '../redux-actions.js'
 
 import loading from './loading.jsx'
 import CklstSection from './CklstSection.jsx'
@@ -12,8 +13,8 @@ import Variables from './Variables.jsx'
 /*
   Checklist component.
   All sections and steps will be assigned "id" attribute in form: 
-     For section SEC:X where X is the number of the section
-     For entries    ENTRY:X where X is the step id
+     For section SEC:X where X is the number of the section (pos)
+     For entries    ENTRY:X where X is the <SECTION>:<ENTRYID>
 */
 
 
@@ -24,17 +25,19 @@ class Checklist extends Component {
     this.ckeditorViews = []
   }
 
+  
   componentDidMount () {
     this.ckeditorViews.forEach((ckeditorView) => {
        helpers.applyHLJS(ckeditorView)   
     })
-    
+    this.props.setId2StepIDMapping(this.props.checklist)
   }
 
   componentDidUpdate () {
     this.ckeditorViews.forEach((ckeditorView) => {
        helpers.applyHLJS(ckeditorView, true)   
     })
+    this.props.setId2StepIDMapping(this.props.checklist)
   }
 
   
@@ -69,51 +72,29 @@ class Checklist extends Component {
 
       // Checking if checklist object has "body" property at all. If it has it, then we must
       // mix body with sections.
-      if (checklist.hasOwnProperty('body')) {
-            // Check if body array has Object with "beforesec" property equal to 0, this body peace must come very first
-            // That is why we assign it to index 0 i.e. st[0]
-            checklist.body.find((b) => { 
-               if (b.beforesec == 0) {
-                  st[0] = <div className={chklstBodyClass} key="0">{generateBodyContent(b.content)}</div>
-               } 
-            })        
-      } 
+      if (checklist.hasOwnProperty('body') && checklist.body.length > 0) {
+           
+          var chklstContent = checklist.body.map( function (bodyEntry, ind){
+           
+            if (bodyEntry.hasOwnProperty('content')) {
+               return <div className={chklstBodyClass} key={ind}>{generateBodyContent(bodyEntry.content)}</div>
+            }
+            
+            if (bodyEntry.hasOwnProperty('section')) {
+               return <CklstSection section={helpers.getSectionByPos(checklist, bodyEntry.section)} key={ind}/>
+            }
 
-      // Here we are sorting step Objects in steps array by step.pos key value
-      checklist.sections.sort((a, b) => {
-         return a.pos - b.pos
-      })
+            return <div key={ind}/>
+          
+          })        
 
-      // shift variable will be used to insert body content between steps.
-      var shift = 0
-      // We providing st array to this reduce function, here we will mix body and steps
-      var chklstContent = checklist.sections.reduce( function (prev, section){
-          // If body for this checklist exists and there is body content that must come before the specified section, then 
-          // we will add it. Increase shift variable after to insert section after body content, then all other elements will be also shifted.
-          if (checklist.hasOwnProperty('body')) {
-               checklist.body.find((b) => { 
-                   if (b.beforesec == section.pos) {
-                      prev[section.pos+shift] = <div className={chklstBodyClass} key={section.pos+shift}>{generateBodyContent(b.content)}</div>
-                      shift++
-                   }
-               })
-          } 
-          // Add section itself
-          prev[section.pos+shift] = <CklstSection section={section} key={section.pos+shift}/>
-          return prev
-      }, st)
+      } else {
+          var chklstContent = <div></div>
+      }
+
     
-
-      if (checklist.hasOwnProperty('body')) {
-            // Check if body array has Object with "beforesec" property equal to -1, this body peace must come at the end.
-            // That is why we push it to setContent array
-            checklist.body.find((b) => { 
-               if (b.beforesec == -1) {
-                  chklstContent.push(<div className={chklstBodyClass} key="-1">{generateBodyContent(b.content)}</div>)
-               } 
-            })        
-      } 
-
+    
+    
     
     return (
        
@@ -144,4 +125,14 @@ const mapStateToProps$Checklist = function (state) {
    return { checklist: state.checklist }
 }
 
-export default connect(mapStateToProps$Checklist)(Checklist)
+
+const mapDispatchToProps$Checklist = function(dispatch) {
+  return {
+    setId2StepIDMapping: function(checklist) {
+      dispatch(Actions.actionUpdateId2StepID({checklist: checklist}))
+    }
+  }
+}
+
+
+export default connect(mapStateToProps$Checklist,mapDispatchToProps$Checklist)(Checklist)
