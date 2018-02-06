@@ -297,3 +297,4 @@ export var printREDUXStore = function () {
   Store.dispatch(Actions.actionRemoveCurrentChecklist())
   console.log(Store.getState())
 }
+

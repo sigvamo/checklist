@@ -15,12 +15,13 @@ render() {
   var popupMgrStyle = {position: "absolute"}
   var popupStyle  = {position: "absolute", zIndex: 1000}
   
+  var popupCurrentStyle
   var popups = this.props.popups.reduce((next, popup) => {
   var Component = popup.component
      if ("style" in popup) {
-        var popupCurrentStyle = Object.assign(popupStyle, popup.style)  
+        popupCurrentStyle = Object.assign(popupStyle, popup.style)  
      } else {
-        var popupCurrentStyle = popupStyle  
+        popupCurrentStyle = popupStyle  
      }
      
      if (popup.visible) {
@@ -28,13 +29,13 @@ render() {
               popupCurrentStyle["left"] = popup.position.x
               popupCurrentStyle["top"]  = popup.position.y
            }
-
-           next.push(<div style={popupCurrentStyle} key={popup}><Component popupID={popup.id} props_={popup.componentProps}/></div>)
+           
+           next.push(<div style={popupCurrentStyle} id={popup.id} key={popup.id}><Component popupID={popup.id} props_={popup.componentProps}/></div>)
      }
      return next
   }, [])
 
-  
+  popupCurrentStyle={}
 
 
   return (

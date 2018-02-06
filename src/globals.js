@@ -20,6 +20,10 @@ export var apiReqTimeout = function (r=0) {
       }
 }
 
+/* Popup IDs. Group of Popups has the same ID, it prevents opening two popups with same Id in parallel */
+export var POPUP_ID_VARIABLES = 'VARS'
+export var POPUP_ID_CKLSTEDITOR = 'CKLSTEDITOR'
+
 /* Entry types of checklist */
 export var ENTRY_BODY_CONTENT = 0
 export var ENTRY_STEP = 1
@@ -56,5 +60,24 @@ export var getEntryName = function (entryType) {
            break;
     }
 
+}
+
+/* Placeholder for new Checklist */
+export var newChecklist = {
+  id : -1,
+  version : '1.0.0',
+  titel : '',
+  description : '',
+  variables : [],
+  body : [],
+  sections : [
+    {
+      pos : 1,
+          titel : '',
+          conditions : [],
+          contentmeta: [],
+          contentdata: [] 
+        }
+   ]
 }
 

@@ -113,7 +113,7 @@ handleMOut() {
 }
 
 handleMOver() {
-  this.props.removePopup('VARS')
+  this.props.removePopup(globals.POPUP_ID_VARIABLES)
 }
 
 /* Track the position of the cursor */
@@ -123,7 +123,7 @@ handleMove(variable, e) {
   this.curY = e.pageY
   if ( this.triggerPopup ) {
     this.props.addPopup({
-              id:'VARS', 
+              id:globals.POPUP_ID_VARIABLES, 
               visible: true, 
               style: {},
               component: VarsPopup_,
