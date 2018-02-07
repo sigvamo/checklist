@@ -14,7 +14,7 @@ render() {
 
   var popupMgrStyle = {position: "absolute"}
   var popupStyle  = {position: "absolute", zIndex: 1000}
-
+  
   /* In the next code we reduce this.props.popups to eliminate invisible popups, we build the array of visible popups.
      We used here JQuery.extend to extend the popup.style with popupStyle and positioning CSS properties. It is important to
      extend existing popup.style and to not use Object.assign, because in this case styles of all components in resulting array
