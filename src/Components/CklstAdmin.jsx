@@ -31,6 +31,13 @@ class CklstAdmin extends Component {
 
   addBodyText() {
      console.log('OK')
+     this.props.addPopup({
+              id: 'TEST', 
+              visible: true, 
+              style: {},
+              component: AdminModifyCklstTitel,
+              componentProps: {},
+              position: {x: 400, y: 200} })
   }
   
   render() { 

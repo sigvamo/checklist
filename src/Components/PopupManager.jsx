@@ -14,30 +14,35 @@ render() {
 
   var popupMgrStyle = {position: "absolute"}
   var popupStyle  = {position: "absolute", zIndex: 1000}
-  
-  var popupCurrentStyle
-  var popups = this.props.popups.reduce((next, popup) => {
-  var Component = popup.component
+
+  /* In the next code we reduce this.props.popups to eliminate invisible popups, we build the array of visible popups.
+     We used here JQuery.extend to extend the popup.style with popupStyle and positioning CSS properties. It is important to
+     extend existing popup.style and to not use Object.assign, because in this case styles of all components in resulting array
+     will be equal to the style of the last component added to the array! */
+  var popups = this.props.popups.reduce((next, popup, ind) => { 
+     var Component = popup.component
      if ("style" in popup) {
-        popupCurrentStyle = Object.assign(popupStyle, popup.style)  
+        // eslint-disable-next-line
+        jQuery.extend(popup.style, popupStyle)  
      } else {
-        popupCurrentStyle = popupStyle  
+        popup.style = popupStyle
      }
      
      if (popup.visible) {
            if ( "position" in popup ) {
-              popupCurrentStyle["left"] = popup.position.x
-              popupCurrentStyle["top"]  = popup.position.y
+              // eslint-disable-next-line
+              jQuery.extend(popup.style, {left: popup.position.x, top: popup.position.y})
+           } else {
+              // eslint-disable-next-line
+              jQuery.extend(popup.style, {left: 0, top: 0})
            }
            
-           next.push(<div style={popupCurrentStyle} id={popup.id} key={popup.id}><Component popupID={popup.id} props_={popup.componentProps}/></div>)
+           next.push(<div style={popup.style} id={popup.id} key={popup.id}><Component popupID={popup.id} props_={popup.componentProps}/></div>)     
      }
      return next
   }, [])
 
-  popupCurrentStyle={}
-
-
+  
   return (
 
       <div style={popupMgrStyle}>
@@ -54,12 +59,4 @@ const mapStateToProps$PopupManager = function (state) {
    return { popups: state.popups }
 }
 
-const mapDispatchToProps$PopupManager = function(dispatch) {
-  return {
-    clearAlert: function() {
-      dispatch(Actions.actionSetPopup({visible: false }))
-    }
-  }
-}
-
-export default connect(mapStateToProps$PopupManager, mapDispatchToProps$PopupManager)(PopupManager)
+export default connect(mapStateToProps$PopupManager)(PopupManager)
