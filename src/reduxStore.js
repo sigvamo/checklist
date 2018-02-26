@@ -19,9 +19,11 @@ const Reducer = function (state={}, action) {
          return newState    
       break;
 
-    case Actions.CHANGE_CHECKLIST_TITEL:
+    case Actions.CHANGE_CHECKLIST:
          if (!state.checklist) { return state }
-         newState = update(state, {checklist: {titel: {$set: action.titel }}} )
+           newState = update(state, {checklist: {$set: action.checklist} })
+         //newState = update(state, {checklist: {titel: {$set: action.titel[0] }, description: {$set: action.titel[1]} }} )
+         //newState['checklist']['description'] = action.titel[1]
          return newState    
       break;
   

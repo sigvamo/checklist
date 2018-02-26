@@ -16,6 +16,8 @@ import Store from './reduxStore.js'
 
 import App from './App';
 
+
+
 /* All elements will have the property function to scroll them to the "center" of the page */
 HTMLElement.prototype.scrollToCenter = function(){
     window.scrollBy(0, this.getBoundingClientRect().top - ((window.innerHeight/2) >> 1));

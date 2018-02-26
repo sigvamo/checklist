@@ -14,7 +14,7 @@ class AddChecklistPage extends Component {
   }
 
   componentDidMount() {
-     this.props.setCurrChecklist(globals.newChecklist)
+     this.props.setCurrChecklist(globals.newChecklistTemplate)
   }
    
   render() {

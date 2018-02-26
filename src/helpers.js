@@ -153,43 +153,28 @@ export var showVariables = function (text) {
 
 /* jQuery function, to keep Navigation always on top */
 export var jQsetOnScroll = function(params={}) {
+  /* eslint-disable */
   if (params.init === true) {
-       // eslint-disable-next-line
        $("#Navigation").css({"maxHeight": 300});
        //$("#Navigation").height(300);
-       // eslint-disable-next-line
        var checklistMarginTop = $("#Checklist").css("margin-top")
-       // eslint-disable-next-line
        let offset = parseFloat(checklistMarginTop.replace(/[^0-9.]+/g,''));
-       // eslint-disable-next-line
        $("#Navigation").css({"margin-top": offset})
-       // eslint-disable-next-line
        $(window).off('scroll')
   } else {
-     // eslint-disable-next-line
      $("#Navigation").css({"maxHeight": $(window).height() - 30});
-     // eslint-disable-next-line
      $(window).scroll(function(){
-     // eslint-disable-next-line
      $("#Navigation").css({"maxHeight": $(window).height() - 30});
      //$("#Navigation").height($(window).height() - 30);
-     // eslint-disable-next-line
      var checklistTop = $("#Checklist").offset().top
-     // eslint-disable-next-line
      var checklistHeight = $("#Checklist").height()
-     // eslint-disable-next-line
      var checklistMarginTop = $("#Checklist").css("margin-top")
-     // eslint-disable-next-line
      let offset = parseFloat(checklistMarginTop.replace(/[^0-9.]+/g,''));
-     // eslint-disable-next-line
      var windowTop = $(window).scrollTop();
      (windowTop < checklistTop) ? offset += 0 : offset += windowTop-checklistTop
-     // eslint-disable-next-line
      if (offset > checklistTop + checklistHeight - $("#Navigation").height() ) { return }
-     // eslint-disable-next-line
        $("#Navigation")
-              .stop()
-              // eslint-disable-next-line
+              .stop()      
               .animate({"marginTop": (offset + "px")}, 0 );
      })
   }
@@ -292,6 +277,47 @@ export var genId2StepIdMapping = function (checklist){
          })
   return id2stepId
 }
+
+// This function used to get current values of different entries in checklist
+export var getCklstCurrent = function (what, pos) {
+  let checklist = Store.getState()['checklist']
+  let retVal
+   switch (what) {
+     case globals.CKLST_TITEL:
+       retVal = [checklist.titel, checklist.description]
+       break;
+     case globals.CKLST_BODY_CONTENT:
+       retVal = checklist.body[pos].content
+       break;
+   }
+  return retVal
+}
+
+
+export var cklstAdminEngine = function (action, what, desc) {
+   let tmpChecklist = Object.assign({}, Store.getState()['checklist'])
+   switch (action) {
+     case 'ADD':
+         switch (what) {
+            case globals.CKLST_TITEL:
+                tmpChecklist['titel']=desc[0]
+                tmpChecklist['description']=desc[1]
+              break;
+            case globals.CKLST_BODY_CONTENT:
+                /* We will not add body content if the last entry is body content. We will add it only 
+                   after section or to the empty body*/  
+                // Check if body not exists or has zero length
+                if (! ('body' in tmpChecklist) || tmpChecklist['body'].length===0 ) {
+                  tmpChecklist['body'].push({content: desc})
+                }
+              break;    
+         }
+
+       break;
+   }
+  Store.dispatch(Actions.actionChangeChecklist(tmpChecklist))
+}
+
 
 export var printREDUXStore = function () {
   Store.dispatch(Actions.actionRemoveCurrentChecklist())

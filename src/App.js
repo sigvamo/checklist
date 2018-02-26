@@ -23,9 +23,6 @@ class App extends Component {
        
        <MainPageLayout />
 
-       
-       <Footer />
-
 
       </div>
     );

@@ -27,7 +27,7 @@ render() {
   
    var Style = {width:"400px", maxWidth:"450px", padding:"3px"}
 
-   var varsTree = this.props.props_.varsTree
+   var varsTree = this.props.varsTree
    var foundCnt = Object.keys(varsTree.sections).length
    var id2stepidMapping = this.props.id2stepidMapping
 
@@ -71,7 +71,7 @@ render() {
 
    return (
       <div className="card" style={Style} onMouseLeave={this.handleMLeav.bind(this)}>
-          <div><span className="ag-variables-title">Variable <b>$${this.props.props_.content}$$</b> {message}</span></div>
+          <div><span className="ag-variables-title">Variable <b>$${this.props.content}$$</b> {message}</span></div>
           {content()}
       </div>
       )

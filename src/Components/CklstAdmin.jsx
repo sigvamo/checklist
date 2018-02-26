@@ -9,7 +9,8 @@ import CklstSection from './CklstSection.jsx'
 import Navigation from './Navigation.jsx'
 import Variables from './Variables.jsx'
 
-import {AdminModifyCklstTitel, AdminModifyBodyText} from './checklistAdminComponents.jsx'
+import CklstAdminModifyTitel from './CklstAdminModifyTitel.jsx'
+import CklstAdminModifyTextEntry from './CklstAdminModifyTextEntry.jsx'
 
 
 class CklstAdmin extends Component {
@@ -19,25 +20,25 @@ class CklstAdmin extends Component {
   }
 
   addTitel() {
-     console.log('OK')
+     // Here display:table is required to make popup change size when innere element grows, like textarea. Innere div must be display:inline-table
      this.props.addPopup({
-              id: this.PopupId, 
-              visible: true, 
-              style: {},
-              component: AdminModifyCklstTitel,
-              componentProps: {},
-              position: {x: 200, y: 200} })
+         id: this.PopupId, 
+         visible: true, 
+         style: {display: "table"},
+         component: CklstAdminModifyTitel,
+         componentProps: {},
+         position: {x: window.innerWidth*0.1/2, y: window.innerHeight*0.5/2} })
   }
 
-  addBodyText() {
-     console.log('OK')
+  addTextEntry() {
      this.props.addPopup({
-              id: 'TEST', 
-              visible: true, 
-              style: {},
-              component: AdminModifyCklstTitel,
-              componentProps: {},
-              position: {x: 400, y: 200} })
+         id: this.PopupId, 
+         visible: true, 
+         style: {display: "table"},
+         component: CklstAdminModifyTextEntry,
+         componentProps: {action: "MODIFY", position: 0, entryType: globals.CKLST_BODY_CONTENT},
+         position: {x: window.innerWidth*0.1/2, y: window.innerHeight*0.5/2} })
+
   }
   
   render() { 
@@ -47,7 +48,7 @@ class CklstAdmin extends Component {
        <div className="card darken-1" id="Checklist">
             <div className="card-content">
                <span className="ag-link" onClick={this.addTitel.bind(this)}>[Add Titel]</span>
-               <span className="ag-link" onClick={this.addBodyText.bind(this)}>[Add Body Text]</span>
+               <span className="ag-link" onClick={this.addTextEntry.bind(this)}>[Add Body Text]</span>
             </div>
           </div>
       )

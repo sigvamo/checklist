@@ -15,7 +15,6 @@ class Footer extends Component {
   }
 
   handleClick(e) {
-  	helpers.printREDUXStore()
     if (this.chkTitelInput.checkValidity()) {
     	  this.props.updateCklstTitel(this.state.chkTitelInputValue)
           this.chkTitelInput.value = null

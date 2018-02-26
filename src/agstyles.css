@@ -321,3 +321,41 @@ span.ag-header-badge {
   display: inline-block;
   font-family: Roboto, sans-serif;
 }
+
+.ag-grid {
+  display: grid;
+}
+
+/* display:inline-table is required to let parent div (Popup window) to expand as child expands. 
+ Parent div must have display:table in its style */
+.ag-popup {
+  display: inline-table;
+}
+
+.ag-card-grid-standard-popup {  
+   grid-template-rows: 50px auto 50px;
+   height: 100%;
+}
+
+.ag-grid-item-popup-footer {
+   grid-row: 3 / 4;
+   justify-self: end;
+   align-items: center;
+   display:flex;
+   justify-content: flex-end;
+   padding-right: 15px;
+}
+
+.ag-grid-item-popup-header {
+   grid-row: 1 / 2;
+   padding: 24px;
+}
+
+.ag-grid-item-popup-body {
+   grid-row: 2 / 3;
+   justify-self: stretch;
+}
+
+.ag-capitalize {
+  text-transform: capitalize;
+}
